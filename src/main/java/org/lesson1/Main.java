@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Task1: " + Task1.isEven(2));
+        System.out.println("Task1: " + Task1.isEven(3));
         System.out.println("Task2: " + Task2.isPositive(0));
         System.out.println("Task3: " + Task3.checkAccess(18));
         System.out.println("Task4: " + Task4.getGrade(100));

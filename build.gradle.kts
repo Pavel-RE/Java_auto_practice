@@ -18,3 +18,24 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.register("simpleTask"){
+    group = "firstStep"
+    println("Simple task is running")
+    doLast {
+        println("Final")
+    }
+}
+
+tasks.named("simpleTask"){
+    dependsOn("clean")
+    dependsOn("anotherSimpleTask")
+}
+
+
+tasks.register("anotherSimpleTask"){
+    doLast {
+        println("Last string")
+    }
+    println("Env is setted!")
+}

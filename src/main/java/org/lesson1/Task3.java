@@ -5,7 +5,7 @@ package org.lesson1;
 
 public class Task3 {
     public static String checkAccess(int i) {
-        if (i < 18) {
+        if (i <= 18) {
             return "Denied";
         } else {
             return "Allowed";
