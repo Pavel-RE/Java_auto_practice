@@ -15,27 +15,68 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+// Из лекции 2
+/*
+tasks.register<Test>("smoke"){
+    systemProperty("CIRCUIT", System.getProperty("circuit", "DEV"))
+ useJUnitPlatform{
+     includeTags("Smoke")
+ }
+}
+*/
+
+// ============================================
+// НАСТРОЙКА ТЕСТОВ (ОБЩАЯ)
+// ============================================
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
+    outputs.upToDateWhen { false }
 }
 
-tasks.register("simpleTask"){
-    group = "firstStep"
-    println("Simple task is running")
-    doLast {
-        println("Final")
+// ============================================
+// ЗАДАЧА ДЛЯ Lesson2Tests1
+// ============================================
+tasks.register<Test>("Lesson2Tests1") {
+    group = "lesson2"
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
+    outputs.upToDateWhen { false }
+    filter {
+        filter.includeTestsMatching("Lesson2Tests1")
     }
 }
 
-tasks.named("simpleTask"){
-    dependsOn("clean")
-    dependsOn("anotherSimpleTask")
+// ============================================
+// ЗАДАЧА ДЛЯ Lesson2Tests2
+// ============================================
+tasks.register<Test>("Lesson2Tests2") {
+    group = "lesson2"
+    useJUnitPlatform()
+    testLogging {
+        showStandardStreams = true
+    }
+    outputs.upToDateWhen { false }
+    filter {
+        filter.includeTestsMatching("Lesson2Tests2")
+    }
 }
 
-
-tasks.register("anotherSimpleTask"){
+// ============================================
+// testRunIsOver - запускает только Lesson2Tests1
+// ============================================
+tasks.register("testRunIsOver") {
+    group = "lesson2"
+    description = "Запускает Lesson2Tests1 и выводит сообщение"
+    dependsOn("Lesson2Tests1")  // ← зависит от testLesson1, а не от test
     doLast {
-        println("Last string")
+        println()
+        println("========================================")
+        println("Test run is over (Lesson2Tests1)")
+        println("========================================")
     }
-    println("Env is setted!")
 }
