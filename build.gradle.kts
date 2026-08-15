@@ -1,3 +1,6 @@
+import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.excludeTags
+import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.includeTags
+
 plugins {
     id("java")
 }
@@ -79,4 +82,35 @@ tasks.register("testRunIsOver") {
         println("Test run is over (Lesson2Tests1)")
         println("========================================")
     }
+}
+
+// ============================================
+// ЗАДАЧИ ДЛЯ Lesson3
+// ============================================
+
+// Запускаем задачу 1
+tasks.register<Test>("Lesson3Task1") {
+    group = "lesson3"
+    useJUnitPlatform {
+        includeTags("lesson3Task1", "smoke") //включить
+        excludeTags("lesson3Task2") //исключить
+    }
+}
+// Запускаем задачу 2. Все таски
+tasks.register<Test>("Lesson3Task2") {
+    group = "lesson3"
+    useJUnitPlatform{
+    includeTags("lesson3Task2") //включить
+    excludeTags("lesson3Task1") //исключить
+        }
+
+}
+
+// Запускаем задачу 2. Таски на выбор
+tasks.register<Test>("Lesson3Task2Task") {
+    group = "lesson3"
+    useJUnitPlatform {
+        includeTags("Task2", "Task11") //включить нужные нам таски
+    }
+
 }
