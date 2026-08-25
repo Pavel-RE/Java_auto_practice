@@ -16,6 +16,9 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    testImplementation("io.rest-assured:rest-assured:6.0.1")
+    testImplementation("org.assertj:assertj-core:3.24.2")
 }
 
 // Из лекции 2
@@ -113,4 +116,34 @@ tasks.register<Test>("Lesson3Task2Task") {
         includeTags("Task2", "Task11") //включить нужные нам таски
     }
 
+}
+
+
+// ============================================
+// ЗАДАЧИ ДЛЯ Lesson4
+// ============================================
+
+// Запускаем задачу 1
+tasks.register<Test>("Lesson4Task1") {
+    group = "lesson4"
+    useJUnitPlatform {
+        includeTags("lesson4Task1") //включить
+        excludeTags("lesson4Task2") //исключить
+    }
+}
+// Запускаем задачу 2
+tasks.register<Test>("Lesson4Task2") {
+    group = "lesson4"
+    useJUnitPlatform {
+        includeTags("lesson4Task2") //включить
+        excludeTags("lesson4Task1") //исключить
+    }
+}
+
+// Запускаем обе задачи (только API автотесты)
+tasks.register<Test>("Lesson4API") {
+    group = "lesson4"
+    useJUnitPlatform {
+        includeTags("API") //включить API-автотесты
+    }
 }
