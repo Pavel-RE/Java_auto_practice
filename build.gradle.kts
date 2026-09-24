@@ -18,7 +18,9 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
     testImplementation("io.rest-assured:rest-assured:6.0.1")
-    testImplementation("org.assertj:assertj-core:3.24.2")
+    implementation("org.seleniumhq.selenium:selenium-java:4.49.0")
+    implementation("com.codeborne:selenide:7.18.1")
+    testImplementation("org.assertj:assertj-core:3.25.3")
 }
 
 // Из лекции 2
