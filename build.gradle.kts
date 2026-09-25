@@ -149,3 +149,25 @@ tasks.register<Test>("Lesson4API") {
         includeTags("API") //включить API-автотесты
     }
 }
+
+// ============================================
+// ЗАДАЧИ ДЛЯ Lesson Selenium и Selenide
+// ============================================
+tasks.register<Test>("seleniumTests") {
+    group = "seleniumTests"
+    useJUnitPlatform {
+        includeTags("seleniumTests") //включить
+    }
+}
+tasks.register<Test>("selenideTests1") {
+    group = "selenideTests"
+    useJUnitPlatform {
+        includeTags("selenideTests1") //включить
+    }
+}
+tasks.register<Test>("selenideTests2") {
+    group = "selenideTests"
+    useJUnitPlatform {
+        includeTags("selenideTests2") //включить
+    }
+}

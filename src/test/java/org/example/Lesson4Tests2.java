@@ -262,7 +262,7 @@ public class Lesson4Tests2 {
                 .isEqualTo(200);
     }
 
-    //10. Метод delete("/goods/{id}"). Проверяем код 200.
+    //10. Метод delete("/goods/{id}"). Проверяем код 404.
     @Test
     @Order(10)
     @Tag("API")
