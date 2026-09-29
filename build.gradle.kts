@@ -171,3 +171,10 @@ tasks.register<Test>("selenideTests2") {
         includeTags("selenideTests2") //включить
     }
 }
+
+tasks.register<Test>("dragAndDropTests") {
+    group = "dragAndDropTests"
+    useJUnitPlatform {
+        includeTags("dragAndDropTests") //включить
+    }
+}
