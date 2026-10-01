@@ -21,6 +21,7 @@ dependencies {
     implementation("org.seleniumhq.selenium:selenium-java:4.49.0")
     implementation("com.codeborne:selenide:7.18.1")
     testImplementation("org.assertj:assertj-core:3.25.3")
+    implementation("org.aeonbits.owner:owner:1.0.12")
 }
 
 // Из лекции 2
