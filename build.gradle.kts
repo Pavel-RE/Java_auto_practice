@@ -20,8 +20,9 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:6.0.1")
     implementation("org.seleniumhq.selenium:selenium-java:4.49.0")
     implementation("com.codeborne:selenide:7.18.1")
-    testImplementation("org.assertj:assertj-core:3.25.3")
+    implementation("org.assertj:assertj-core:3.25.3")
     implementation("org.aeonbits.owner:owner:1.0.12")
+    implementation("org.projectlombok:lombok:1.18.48")
 }
 
 // Из лекции 2
@@ -177,5 +178,12 @@ tasks.register<Test>("dragAndDropTests") {
     group = "dragAndDropTests"
     useJUnitPlatform {
         includeTags("dragAndDropTests") //включить
+    }
+}
+
+tasks.register<Test>("POTests") {
+    group = "POTests"
+    useJUnitPlatform {
+        includeTags("POTests") //включить
     }
 }
