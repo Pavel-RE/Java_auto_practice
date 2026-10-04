@@ -92,6 +92,7 @@ public class SelenideTests2 {
 
 
         //создаем товары в админке
+
         Response response1 = given()
                 .spec(basicRQ)
                 .queryParam("size", 1)

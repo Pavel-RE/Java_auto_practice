@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -23,38 +24,40 @@ public class MainPage {
             productNameList = $$x("//h4"),
             productCountInputList = $$x("//*[@type='number']");
 
-    public void clickCartButton(){
+    @Step("Нажать на кнопку корзины")
+    public void clickCartButton() {
         cartButton.click();
     }
 
-
-    public void checkCartButtonIsVisible(){
+    @Step("Проверить, что кнопка корзины видна")
+    public void checkCartButtonIsVisible() {
         cartButton.should(visible);
     }
 
-    public void inputProductCount(int index, String text){
+    @Step("Ввести количество товара [{index}]: {text}")
+    public void inputProductCount(int index, String text) {
         productCountInputList.get(index).clear();
-        productCountInputList.get(index)
-                .sendKeys(text);
+        productCountInputList.get(index).sendKeys(text);
     }
 
-    public void inputProductCount(int index, Keys keys){
-        productCountInputList.get(index)
-                .sendKeys(keys);
+    @Step("Нажать клавишу {keys} в поле количества [{index}]")
+    public void inputProductCount(int index, Keys keys) {
+        productCountInputList.get(index).sendKeys(keys);
     }
 
-    public void clickCloseCartButton(){
+    @Step("Закрыть корзину")
+    public void clickCloseCartButton() {
         closeCart.click();
     }
 
+    @Step("Добавить в корзину товар с индексом {index}")
     public void addToCart(int index) {
         addToCardButtonList.get(index).click();
     }
 
+    @Step("Получить цену товара с индексом {index}")
     public int getProductPrice(int index) {
-        String priceText = productCardList.get(index).getText();  // "30 ₽"
-        return Integer.parseInt(priceText.replaceAll("[^0-9]", "")); // 30
+        String priceText = productCardList.get(index).getText();
+        return Integer.parseInt(priceText.replaceAll("[^0-9]", ""));
     }
-
-
 }

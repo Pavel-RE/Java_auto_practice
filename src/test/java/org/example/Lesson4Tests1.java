@@ -1,5 +1,7 @@
 package org.example;
 
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -16,6 +18,7 @@ import static io.restassured.RestAssured.given;
 //rest assured tests 1
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Tag("lesson4Task1")
+
 public class Lesson4Tests1 {
 
     private RequestSpecification basicRQ = new RequestSpecBuilder()
@@ -32,6 +35,7 @@ public class Lesson4Tests1 {
     void lesson4Test1(){
         given()
                 .baseUri("http://localhost:8080")
+                .filter(new AllureRestAssured())
                 .log().all()
                 .queryParam("page", 0)
                 .queryParam("size", 100)
@@ -55,6 +59,7 @@ public class Lesson4Tests1 {
     void lesson4Test2(){
         given()
                 .spec(basicRQ)
+                .filter(new AllureRestAssured())
                 .queryParam("size", 1)
                 .auth()
                 .basic("admin", "secret123")

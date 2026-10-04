@@ -1,5 +1,6 @@
 package org.example;
 
+import io.qameta.allure.Step;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
@@ -51,7 +52,8 @@ public class Lesson4Tests2 {
     }
 
     //2. Метод post("/goods/add"). Проверяем код 200.
-    @Test
+
+@Test
     @Order(2)
     @Tag("API")
     void lesson4Test6(){

@@ -3,7 +3,10 @@ import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.include
 
 plugins {
     id("java")
+    id("io.qameta.allure") version "2.12.0"
 }
+
+
 
 group = "org.example"
 version = "1.0-SNAPSHOT"
@@ -23,6 +26,14 @@ dependencies {
     implementation("org.assertj:assertj-core:3.25.3")
     implementation("org.aeonbits.owner:owner:1.0.12")
     implementation("org.projectlombok:lombok:1.18.48")
+    implementation("io.qameta.allure:allure-selenide:2.29.1")
+    implementation("io.qameta.allure:allure-rest-assured:2.29.1")
+}
+
+allure{
+    version = "2.36.0"
+    adapter{
+    }
 }
 
 // Из лекции 2
@@ -186,4 +197,23 @@ tasks.register<Test>("POTests") {
     useJUnitPlatform {
         includeTags("POTests") //включить
     }
+}
+
+tasks.register<Test>("AllureTests") {
+    group = "allure"
+    useJUnitPlatform {
+        includeTags("AllureTests") //включить
+    }
+}
+
+tasks.register("openAllureReport") {
+    group = "allure"
+    description = "Запускает Allure сервер и открывает отчёт"
+    dependsOn ("allureServe")
+}
+
+tasks.register<Delete>("cleanAllure") {
+    group = "allure"
+    description = "Очищает результаты и отчёт Allure"
+    delete("build/allure-results", "build/reports/allure-report")
 }
