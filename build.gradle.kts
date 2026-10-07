@@ -1,219 +1,88 @@
-import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.excludeTags
-import org.gradle.internal.impldep.org.junit.platform.launcher.TagFilter.includeTags
-
 plugins {
     id("java")
-    id("io.qameta.allure") version "2.12.0"
+    id("io.qameta.allure") version "2.12.0" apply false
 }
 
+subprojects {
+    apply(plugin = "java")
 
+    group = "org.example"
+    version = "1.0-SNAPSHOT"
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
-    testImplementation("io.rest-assured:rest-assured:6.0.1")
-    implementation("org.seleniumhq.selenium:selenium-java:4.49.0")
-    implementation("com.codeborne:selenide:7.18.1")
-    implementation("org.assertj:assertj-core:3.25.3")
-    implementation("org.aeonbits.owner:owner:1.0.12")
-    implementation("org.projectlombok:lombok:1.18.48")
-    implementation("io.qameta.allure:allure-selenide:2.29.1")
-    implementation("io.qameta.allure:allure-rest-assured:2.29.1")
-}
-
-allure{
-    version = "2.36.0"
-    adapter{
+    repositories {
+        mavenCentral()
     }
-}
 
-// Из лекции 2
-/*
-tasks.register<Test>("smoke"){
-    systemProperty("CIRCUIT", System.getProperty("circuit", "DEV"))
- useJUnitPlatform{
-     includeTags("Smoke")
- }
-}
-*/
-
-// ============================================
-// НАСТРОЙКА ТЕСТОВ (ОБЩАЯ)
-// ============================================
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        showStandardStreams = true
-    }
-    outputs.upToDateWhen { false }
-}
-
-// ============================================
-// ЗАДАЧА ДЛЯ Lesson2Tests1
-// ============================================
-tasks.register<Test>("Lesson2Tests1") {
-    group = "lesson2"
-    useJUnitPlatform()
-    testLogging {
-        showStandardStreams = true
-    }
-    outputs.upToDateWhen { false }
-    filter {
-        filter.includeTestsMatching("Lesson2Tests1")
-    }
-}
-
-// ============================================
-// ЗАДАЧА ДЛЯ Lesson2Tests2
-// ============================================
-tasks.register<Test>("Lesson2Tests2") {
-    group = "lesson2"
-    useJUnitPlatform()
-    testLogging {
-        showStandardStreams = true
-    }
-    outputs.upToDateWhen { false }
-    filter {
-        filter.includeTestsMatching("Lesson2Tests2")
-    }
-}
-
-// ============================================
-// testRunIsOver - запускает только Lesson2Tests1
-// ============================================
-tasks.register("testRunIsOver") {
-    group = "lesson2"
-    description = "Запускает Lesson2Tests1 и выводит сообщение"
-    dependsOn("Lesson2Tests1")  // ← зависит от testLesson1, а не от test
-    doLast {
-        println()
-        println("========================================")
-        println("Test run is over (Lesson2Tests1)")
-        println("========================================")
-    }
-}
-
-// ============================================
-// ЗАДАЧИ ДЛЯ Lesson3
-// ============================================
-
-// Запускаем задачу 1
-tasks.register<Test>("Lesson3Task1") {
-    group = "lesson3"
-    useJUnitPlatform {
-        includeTags("lesson3Task1", "smoke") //включить
-        excludeTags("lesson3Task2") //исключить
-    }
-}
-// Запускаем задачу 2. Все таски
-tasks.register<Test>("Lesson3Task2") {
-    group = "lesson3"
-    useJUnitPlatform{
-    includeTags("lesson3Task2") //включить
-    excludeTags("lesson3Task1") //исключить
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            showStandardStreams = true
         }
-
-}
-
-// Запускаем задачу 2. Таски на выбор
-tasks.register<Test>("Lesson3Task2Task") {
-    group = "lesson3"
-    useJUnitPlatform {
-        includeTags("Task2", "Task11") //включить нужные нам таски
-    }
-
-}
-
-
-// ============================================
-// ЗАДАЧИ ДЛЯ Lesson4
-// ============================================
-
-// Запускаем задачу 1
-tasks.register<Test>("Lesson4Task1") {
-    group = "lesson4"
-    useJUnitPlatform {
-        includeTags("lesson4Task1") //включить
-        excludeTags("lesson4Task2") //исключить
-    }
-}
-// Запускаем задачу 2
-tasks.register<Test>("Lesson4Task2") {
-    group = "lesson4"
-    useJUnitPlatform {
-        includeTags("lesson4Task2") //включить
-        excludeTags("lesson4Task1") //исключить
-    }
-}
-
-// Запускаем обе задачи (только API автотесты)
-tasks.register<Test>("Lesson4API") {
-    group = "lesson4"
-    useJUnitPlatform {
-        includeTags("API") //включить API-автотесты
+        outputs.upToDateWhen { false }
     }
 }
 
 // ============================================
-// ЗАДАЧИ ДЛЯ Lesson Selenium и Selenide
+// ПРОГОН ВСЕХ ТЕСТОВ (API + UI)
 // ============================================
-tasks.register<Test>("seleniumTests") {
-    group = "seleniumTests"
-    useJUnitPlatform {
-        includeTags("seleniumTests") //включить
-    }
-}
-tasks.register<Test>("selenideTests1") {
-    group = "selenideTests"
-    useJUnitPlatform {
-        includeTags("selenideTests1") //включить
-    }
-}
-tasks.register<Test>("selenideTests2") {
-    group = "selenideTests"
-    useJUnitPlatform {
-        includeTags("selenideTests2") //включить
-    }
+tasks.register("testAll") {
+    group = "verification"
+    description = "Запускает все тесты (API + UI)"
+    dependsOn(":api-tests:test")
+    dependsOn(":ui-tests:test")
 }
 
-tasks.register<Test>("dragAndDropTests") {
-    group = "dragAndDropTests"
-    useJUnitPlatform {
-        includeTags("dragAndDropTests") //включить
-    }
+// ============================================
+// ПРОГОН ВСЕХ API-ТЕСТОВ
+// ============================================
+tasks.register("testApi") {
+    group = "verification"
+    description = "Запускает все API-тесты"
+    dependsOn(":api-tests:test")
 }
 
-tasks.register<Test>("POTests") {
-    group = "POTests"
-    useJUnitPlatform {
-        includeTags("POTests") //включить
-    }
+// ============================================
+// ПРОГОН ВСЕХ UI-ТЕСТОВ
+// ============================================
+tasks.register("testUi") {
+    group = "verification"
+    description = "Запускает все UI-тесты"
+    dependsOn(":ui-tests:test")
 }
 
-tasks.register<Test>("AllureTests") {
+// ============================================
+// SMOKE-ПРОГОН (API + UI)
+// ============================================
+tasks.register("smokeTest") {
+    group = "verification"
+    description = "Запускает smoke-тесты API и UI"
+    dependsOn(":api-tests:apiSmokeTest")
+    dependsOn(":ui-tests:uiSmokeTest")
+}
+
+// ============================================
+// ALLURE
+// ============================================
+tasks.register("allureReport") {
     group = "allure"
-    useJUnitPlatform {
-        includeTags("AllureTests") //включить
-    }
+    description = "Формирует Allure-отчёт"
+    dependsOn(":api-tests:allureReport")
+    dependsOn(":ui-tests:allureReport")
 }
 
-tasks.register("openAllureReport") {
+tasks.register("allureServe") {
     group = "allure"
-    description = "Запускает Allure сервер и открывает отчёт"
-    dependsOn ("allureServe")
+    description = "Открывает Allure-отчёт в браузере"
+    dependsOn(":api-tests:allureServe")
 }
 
 tasks.register<Delete>("cleanAllure") {
     group = "allure"
     description = "Очищает результаты и отчёт Allure"
-    delete("build/allure-results", "build/reports/allure-report")
+    delete(
+        fileTree(rootDir) {
+            include("**/allure-results/**")
+            include("**/allure-report/**")
+        }
+    )
 }
